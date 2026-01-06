@@ -1,0 +1,25 @@
+# --- 1. Python & Ambiente Virtuale (IMPORTANTE) ---
+.venv/
+env/
+venv/
+__pycache__/
+*.pyc
+
+# --- 2. IDE (PyCharm / VS Code) ---
+# Ignoriamo le impostazioni specifiche del tuo editor
+.idea/
+.vscode/
+
+# --- 3. Dati Sensibili & Sicurezza ---
+# Ignoriamo il file con la password, MA manteniamo la cartella config
+config/settings.py
+
+# --- 4. Database e Log ---
+# Non vogliamo caricare lo storico della tua rete su Git
+data/
+*.log
+*.csv
+
+# --- 5. Sistema Operativo ---
+.DS_Store
+Thumbs.db

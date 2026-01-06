@@ -1,0 +1,6 @@
+python-telegram-bot
+speedtest-cli
+schedule
+matplotlib
+pandas
+ping3
