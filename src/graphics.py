@@ -1,14 +1,14 @@
 # src/graphics.py
 import matplotlib
 
-matplotlib.use('Agg')  # Fondamentale per server/termux
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import pandas as pd
-import os
+import io  # <--- NUOVO IMPORT FONDAMENTALE
 
 
-def create_chart(df, days, filename="chart.png"):
-    """Crea il grafico e ritorna il percorso del file"""
+def create_chart(df, days):
+    """Crea il grafico e lo ritorna come oggetto in memoria (Buffer)"""
     if df.empty:
         return None
 
@@ -25,7 +25,7 @@ def create_chart(df, days, filename="chart.png"):
 
     plt.figure(figsize=(10, 6))
 
-    # Linee
+    # Disegno grafico
     plt.plot(df_speed['timestamp'], df_speed['download'], label='Download', color='green', marker='o')
     plt.plot(df_speed['timestamp'], df_speed['upload'], label='Upload', color='blue', marker='x')
 
@@ -33,9 +33,12 @@ def create_chart(df, days, filename="chart.png"):
     plt.ylabel('Mbps')
     plt.grid(True, alpha=0.3)
     plt.legend()
-    plt.gcf().autofmt_xdate()  # Ruota le date per leggerle meglio
+    plt.gcf().autofmt_xdate()
 
-    path = os.path.abspath(filename)
-    plt.savefig(path)
-    plt.close()
-    return path
+    # --- MODIFICA CHIAVE: SALVATAGGIO IN RAM ---
+    buf = io.BytesIO()  # Crea un file "virtuale" in memoria
+    plt.savefig(buf, format='png')
+    plt.close()  # Chiude il grafico di matplotlib
+    buf.seek(0)  # Riavvolge il nastro all'inizio del file
+
+    return buf  # Ritorna l'oggetto, non il percorso
